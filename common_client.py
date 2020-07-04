@@ -1,8 +1,8 @@
 import uuid
-import slobs.payloads.common_payloads as common_payloads
-import slobs.common_queue as common_queue
-import slobs.common_websocket as common_websocket
-import slobs.common_config as common_config
+import libslobs.payloads.common_payloads as common_payloads
+import libslobs.common_queue as common_queue
+import libslobs.common_websocket as common_websocket
+import libslobs.common_config as common_config
 
 class SLOBSClient():
     def __init__(self):

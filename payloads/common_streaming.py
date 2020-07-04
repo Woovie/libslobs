@@ -1,8 +1,8 @@
-import payloads.common_payloads
+import libslobs.payloads.common_payloads as common_payloads
 
-class SLOBSStreamingService(payloads.SLOBSPayloads):
+class SLOBSStreamingService(common_payloads.SLOBSPayloads):
     def __init__(self):
-        payloads.SLOBSPayloads.__init__(self)
+        common_payloads.SLOBSPayloads.__init__(self)
         self.resource = "StreamingService"
 
     def recordingStatusChange(self):# Event

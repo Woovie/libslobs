@@ -1,6 +1,6 @@
 import asyncio, websockets, json
-import slobs.payloads.common_payloads as common_payloads
-import slobs.common_config as common_config
+import libslobs.payloads.common_payloads as common_payloads
+import libslobs.common_config as common_config
 
 class SLOBSWebSocket():
     def __init__(self, url = None):

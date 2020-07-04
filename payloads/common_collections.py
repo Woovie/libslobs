@@ -1,8 +1,8 @@
-import payloads
+import libslobs.payloads.common_payloads as common_payloads
 
-class SLOBSSceneCollectionsService(payloads.SLOBSPayloads):
+class SLOBSSceneCollectionsService(common_payloads.SLOBSPayloads):
     def __init__(self):
-        payloads.SLOBSPayloads.__init__(self)
+        common_payloads.SLOBSPayloads.__init__(self)
         self.resource = "SceneCollectionsService"
 
     def activeCollection(self):

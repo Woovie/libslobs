@@ -1,8 +1,8 @@
-import payloads.common_payloads
+import libslobs.payloads.common_payloads as common_payloads
 
-class SLOBSScenesService(payloads.SLOBSPayloads):
+class SLOBSScenesService(common_payloads.SLOBSPayloads):
     def __init__(self):
-        payloads.SLOBSPayloads.__init__(self)
+        common_payloads.SLOBSPayloads.__init__(self)
         self.resource = "ScenesService"
 
     def activeScene(self):
@@ -102,7 +102,7 @@ class SLOBSScenesService(payloads.SLOBSPayloads):
             "id": self.token,
             "method": "getScene",
             "params": {
-                "resource": self.resource
+                "resource": self.resource,
                 "args": [id]
             }
         }
@@ -113,7 +113,7 @@ class SLOBSScenesService(payloads.SLOBSPayloads):
             "id": self.token,
             "method": "makeSceneActive",
             "params": {
-                "resource": self.resource
+                "resource": self.resource,
                 "args": [id]
             }
         }
@@ -124,7 +124,7 @@ class SLOBSScenesService(payloads.SLOBSPayloads):
             "id": self.token,
             "method": "removeScene",
             "params": {
-                "resource": self.resource
+                "resource": self.resource,
                 "args": [id]
             }
         }
