@@ -1,130 +1,143 @@
 import libslobs.payloads.common_payloads as common_payloads
 
-class SLOBSScenesService(common_payloads.SLOBSPayloads):
+class SLOBSSourcesService(common_payloads.SLOBSPayloads):
     def __init__(self):
         common_payloads.SLOBSPayloads.__init__(self)
-        self.resource = "ScenesService"
+        self.resource = "SourcesService"
 
-    def activeScene(self):
+    def sourceAdded(self):# Event
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "activeScene",
+            "method": "sourceAdded",
             "params": {
                 "resource": self.resource
             }
         }
 
-    def activeSceneId(self):
+    def sourceRemoved(self):# Event
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "activeSceneId",
+            "method": "sourceRemoved",
             "params": {
                 "resource": self.resource
             }
         }
 
-    def itemAdded(self):# Event
+    def sourceUpdated(self):# Event
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "itemAdded",
+            "method": "sourceUpdated",
             "params": {
                 "resource": self.resource
             }
         }
 
-    def itemRemove(self):# Event
+    def addFile(self, path):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "itemRemove",
+            "method": "addFile",
+            "params": {
+                "resource": self.resource,
+                "args": [path]
+            }
+        }
+
+    def createSource(self, name, sourceType, settings, options):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "createSource",
+            "params": {
+                "resource": self.resource,
+                "args": [name, sourceType, settings, options]
+            }
+        }
+
+    def getAvailableSourcesTypesList(self):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "getAvailableSourcesTypesList",
             "params": {
                 "resource": self.resource
             }
         }
 
-    def itemUpdated(self):# Event
+    def getSource(self, sourceId):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "itemUpdated",
+            "method": "getSource",
+            "params": {
+                "resource": self.resource,
+                "args": [sourceId]
+            }
+        }
+
+    def getSources(self):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "getSources",
             "params": {
                 "resource": self.resource
             }
         }
 
-    def sceneAdded(self):# Event
+    def getSourcesByName(self, name):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "sceneAdded",
-            "params": {
-                "resource": self.resource
-            }
-        }
-
-    def sceneRemoved(self):# Event
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "sceneRemoved",
-            "params": {
-                "resource": self.resource
-            }
-        }
-
-    def sceneSwitched(self):# Event
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "sceneSwitched",
-            "params": {
-                "resource": self.resource
-            }
-        }
-
-    def createScene(self, name):
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "createScene",
+            "method": "getSourcesByName",
             "params": {
                 "resource": self.resource,
                 "args": [name]
             }
         }
 
-    def getScene(self, id):
+    def removeSource(self, id):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "getScene",
+            "method": "removeSource",
             "params": {
                 "resource": self.resource,
                 "args": [id]
             }
         }
 
-    def makeSceneActive(self, id):
+    def showAddSource(self, sourceType):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "makeSceneActive",
+            "method": "showAddSource",
             "params": {
                 "resource": self.resource,
-                "args": [id]
+                "args": [sourceType]
             }
         }
 
-    def removeScene(self, id):
+    def showShowcase(self):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "removeScene",
+            "method": "showShowcase",
+            "params": {
+                "resource": self.resource
+            }
+        }
+
+    def showSourceProperties(self, sourceId):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "showSourceProperties",
             "params": {
                 "resource": self.resource,
-                "args": [id]
+                "args": [sourceId]
             }
         }

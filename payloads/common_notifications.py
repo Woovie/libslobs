@@ -1,125 +1,133 @@
 import libslobs.payloads.common_payloads as common_payloads
 
-class SLOBSSceneCollectionsService(common_payloads.SLOBSPayloads):
+class SLOBSNotificationsService(common_payloads.SLOBSPayloads):
     def __init__(self):
         common_payloads.SLOBSPayloads.__init__(self)
-        self.resource = "SceneCollectionsService"
+        self.resource = "NotificationsService"
 
-    def activeCollection(self):
+    def applyAction(self, notificationId):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "activeCollection",
+            "method": "applyAction",
+            "params": {
+                "resource": self.resource,
+                "args": [notificationId]
+            }
+        }
+
+    def getAll(self, notificationType):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "getAll",
+            "params": {
+                "resource": self.resource,
+                "args": [notificationType]
+            }
+        }
+
+    def getNotification(self, id):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "getNotification",
+            "params": {
+                "resource": self.resource,
+                "args": [id]
+            }
+        }
+
+    def getRead(self, notificationType):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "getRead",
+            "params": {
+                "resource": self.resource,
+                "args": [notificationType]
+            }
+        }
+
+    def getSettings(self):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "getSettings",
+            "params": {
+                "resource": self.resource,
+            }
+        }
+
+    def getUnread(self, notificationType):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "getUnread",
+            "params": {
+                "resource": self.resource,
+                "args": [notificationType]
+            }
+        }
+
+    def markAllAsRead(self):
+        return {
+            "jsonrpc": "2.0",
+            "id": self.token,
+            "method": "markAllAsRead",
             "params": {
                 "resource": self.resource
             }
         }
 
-    def collectionAdded(self):# Event
+    def markAsRead(self, id):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "",
+            "method": "markAsRead",
             "params": {
-                "resource": ""
+                "resource": self.resource,
+                "args": [id]
             }
         }
 
-    def collectionRemove(self):# Event
+    def push(self, notifyInfo):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "",
+            "method": "push",
             "params": {
-                "resource": ""
+                "resource": self.resource,
+                "args": [notifyInfo]
             }
         }
 
-    def collectionSwitched(self):# Event
+    def restoreDefaultSettings(self):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "",
-            "params": {
-                "resource": ""
-            }
-        }
-
-    def collectionUpdated(self):# Event
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "",
-            "params": {
-                "resource": ""
-            }
-        }
-
-    def collectionWillSwitch(self):# Event
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "",
-            "params": {
-                "resource": ""
-            }
-        }
-
-    def collections(self):
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "collections",
+            "method": "restoreDefaultSettings",
             "params": {
                 "resource": self.resource
             }
         }
 
-    def create(self, options):
+    def setSettings(self, patch):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "",
+            "method": "setSettings",
             "params": {
-                "resource": self.resource
-            }
-        }
-    
-    def delete(self, id):
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "",
-            "params": {
-                "resource": self.resource
-            }
-        }
-    
-    def fetchSceneCollectionsSchema(self):
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "",
-            "params": {
-                "resource": self.resource
+                "resource": self.resource,
+                "args": [patch]
             }
         }
 
-    def load(self, id):
+    def showNotifications(self):
         return {
             "jsonrpc": "2.0",
             "id": self.token,
-            "method": "",
-            "params": {
-                "resource": ""
-            }
-        }
-    
-    def rename(self, newName, id):
-        return {
-            "jsonrpc": "2.0",
-            "id": self.token,
-            "method": "",
+            "method": "showNotifications",
             "params": {
                 "resource": self.resource
             }
