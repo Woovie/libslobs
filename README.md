@@ -8,7 +8,8 @@ Stream Labs OBS provides a websocket-based API which can be used to do just abou
 I am taking all of their websocket endpoints and turning them into a Python library, making it easier to use these tools. Instead of trying to figure out how to write to their websocket, which uses SockJS, and what format the data needs to be, just simply use this library instead which provides all of that functionality, but in a Pythonic manner.
 
 # How do I get started?
-1. Have Stream Labs OBS installed
+1. Install Stream Labs OBS
+2. Install Python 3.8.x from [here](https://www.python.org/downloads/).
 2. Enable remote connections in Stream Labs OBS by nativgating to Settings -> Remote Control, and click on the QR code that is shown, then click Show details.
 3. ???
 ## TODO
