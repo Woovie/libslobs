@@ -1,6 +1,4 @@
 import asyncio, websockets, json
-import libslobs.common_payloads as payloads
-import libslobs.common_config as config
 
 class SLOBSWebSocket():
     def __init__(self, url = None):
@@ -24,19 +22,6 @@ class SLOBSWebSocket():
 
     def connect(self):
         return self.loop.run_until_complete(self._connect())
-
-    def auth(self, token):
-        payload = payloads.SLOBSPayloads().create_pipeline("auth", "TcpServerService", token)
-        result = self.exec(payload)#fails
-        decoded = self._decode_sockjs_array(result)
-        if 'error' in decoded:
-            print(decoded)
-            return False
-        elif 'result' in decoded:
-            return decoded['result']
-        else:
-            print(decoded)
-            return False
 
     def exec(self, cmd):
         return self.loop.run_until_complete(self._exec(self._encode_sockjs_array(cmd)))
