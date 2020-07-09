@@ -11,7 +11,7 @@ class SLOBSWebSocket():
         response = await self.ws.recv()
         return response
 
-    async def _exec(self, cmd):
+    async def _exec(self, cmd: str):
         await self.ws.send(cmd)
         received = await self.ws.recv()
         return received
@@ -23,11 +23,16 @@ class SLOBSWebSocket():
     def connect(self):
         return self.loop.run_until_complete(self._connect())
 
-    def exec(self, cmd):
+    def exec(self, cmd: str):
         return self.loop.run_until_complete(self._exec(self._encode_sockjs_array(cmd)))
     
-    def _decode_sockjs_array(self, arr):
+    def _decode_sockjs_array(self, arr: str):
         return json.loads(json.loads(arr[2:-1]))
     
-    def _encode_sockjs_array(self, arr):
+    def _encode_sockjs_array(self, arr: dict):
         return json.dumps(json.dumps(arr))
+
+    def send(self, payload: dict, callback = None):
+        if callback and hasattr(callback, '__call__'):# throw it in queue for callback
+            return True
+        return exec(payload)
