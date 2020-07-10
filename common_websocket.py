@@ -1,4 +1,5 @@
 import asyncio, websockets, json
+import libslobs.common_queue
 
 class SLOBSWebSocket():
     def __init__(self, url = None):
@@ -20,6 +21,10 @@ class SLOBSWebSocket():
         received = await self.ws.recv()
         return received
 
+    def process_recv(self, queue: libslobs.common_queue.SLOBSQueue):
+        recvd = self.loop.run_until_complete(self._recv())
+        queue._incoming(self._decode_sockjs_array(recvd))
+
     def connect(self):
         return self.loop.run_until_complete(self._connect())
 
@@ -31,8 +36,3 @@ class SLOBSWebSocket():
     
     def _encode_sockjs_array(self, arr: dict):
         return json.dumps(json.dumps(arr))
-
-    def send(self, payload: dict, callback = None):
-        if callback and hasattr(callback, '__call__'):# throw it in queue for callback
-            return True
-        return exec(payload)
