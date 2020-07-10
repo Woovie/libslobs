@@ -21,13 +21,13 @@ class SLOBSWebSocket():
 
     def process_recv(self, queue: libslobs.common_queue.SLOBSQueue):
         recvd = self.loop.run_until_complete(self._recv())
-        queue._incoming(self._decode_sockjs_array(recvd))
+        queue._incoming(self.decode_sockjs_array(recvd))
 
     def connect(self):
         return self.loop.run_until_complete(self._connect())
 
     def exec(self, cmd: str):
-        self.loop.run_until_complete(self._exec(self._encode_sockjs_array(cmd)))
+        self.loop.run_until_complete(self._exec(self.encode_sockjs_array(cmd)))
     
     @staticmethod
     def decode_sockjs_array(arr: str):
