@@ -30,9 +30,9 @@ class SLOBSWebSocket():
         self.loop.run_until_complete(self._exec(self._encode_sockjs_array(cmd)))
     
     @staticmethod
-    def _decode_sockjs_array(arr: str):
+    def decode_sockjs_array(arr: str):
         return json.loads(json.loads(arr[2:-1]))
     
     @staticmethod
-    def _encode_sockjs_array(arr: dict):
+    def encode_sockjs_array(arr: dict):
         return json.dumps(json.dumps(arr))
