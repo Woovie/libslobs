@@ -15,7 +15,7 @@ class SLOBSClient():
         self.verbosity = verbosity
         self.threads = {}
         self.threads['queue_processor'] = threading.Thread(target=self.queue._process_queue)
-        self.threads['websocket_recv'] = threading.Thread(target=self.connection_handler.process_recv, args=self.queue)
+        self.threads['websocket_recv'] = threading.Thread(target=self.connection_handler.process_recv, args=[self.queue])
 
     def connect(self) -> bool:
         returned = self.connection_handler.connect()
