@@ -14,10 +14,14 @@ class SLOBSClient():
         self.queue = libslobs.common_queue.SLOBSQueue()
         self.verbosity = verbosity
         self.threads = {}
+        self.threads['queue_processor'] = threading.Thread(target=self.queue._process_queue)
+        self.threads['websocket_recv'] = threading.Thread(target=self.connection_handler.process_recv, args=self.queue)
 
     def connect(self) -> bool:
         returned = self.connection_handler.connect()
         if returned == 'o':
+            for thread in self.threads:
+                thread.start()
             return True
         else:
             return False
