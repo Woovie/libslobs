@@ -21,7 +21,7 @@ class SLOBSClient():
         returned = self.connection_handler.connect()
         if returned == 'o':
             for thread in self.threads:
-                threads[thread].start()
+                self.threads[thread].start()
             return True
         else:
             return False
