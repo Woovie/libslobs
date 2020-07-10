@@ -15,30 +15,21 @@ class SLOBSClient():
         self.verbosity = verbosity
         self.threads = {}
 
-    def connect(self):
+    def connect(self) -> bool:
         returned = self.connection_handler.connect()
         if returned == 'o':
             return True
         else:
             return False
 
-    def auth(self):
-        payload = libslobs.common_payloads.SLOBSPayloads().create_payload("auth", "TcpServerService", self.api_token)
-        result = self.connection_handler.exec(payload)
-        decoded = self.connection_handler._decode_sockjs_array(result)
-        if 'error' in decoded:
-            return False, decoded
-        elif 'result' in decoded:
-            return True, decoded
+    def auth(self, callback: Callable[[dict], Any]): 
+        self.send("auth", "TcpServerService", self.api_token, callback=callback)
 
-    def send(self, method: str, resource: str, callback: Callable[[dict], Any] = None, *args):
-        if callback and hasattr(callback, '__call__'):# throw it in queue for callback
-            payload = libslobs.common_payloads.SLOBSPayloads().create_payload(method, resource, args)
-            payload_result = self.connection_handler.exec(payload)
-            queue_result = self.queue.add_callback(callback, payload['id'])
-
-        else:
-            return False# Some error needs to happen here.
+    def send(self, method: str, resource: str, *args, callback: Callable[[dict], Any] = None):
+        payload = libslobs.common_payloads.SLOBSPayloads().create_payload(method, resource, args)
+        if callback and hasattr(callback, '__call__'):
+            self.queue.add_callback(callback, payload['id'])
+        self.connection_handler.exec(payload)
         
 
     def recv(self, payload: dict):# So we will get back a dict from SLOBS here
