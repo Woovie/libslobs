@@ -17,7 +17,9 @@ class SLOBSQueue():
     
     def _process_queue(self):
         for message in self.incoming:
-            print(message)
+            if id in message:
+                if message[id] in self.events:
+                    self.events[message[id]](message)
         
     def _incoming(self, message: dict):
         self.incoming.append(message)
