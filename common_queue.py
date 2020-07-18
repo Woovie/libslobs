@@ -1,6 +1,6 @@
 from typing import Callable, Any
 import asyncio
-from time import sleep
+from time import sleep, time
 
 class SLOBSQueue():
     def __init__(self):
@@ -26,12 +26,16 @@ class SLOBSQueue():
         while True:
             if len(self.incoming) > 0:
                 for message in self.incoming:
-                    if 'id' in message:
-                        if message['id'] in self.events:
-                            self.events[message['id']](message)
-                            self.incoming.remove(message)
+                    self._process_queue_message(message)
+                sleep(-time()%0.01667)
             else:
                 sleep(0.01667)
-        
+
+    def _process_queue_message(self, message: str):
+        if 'id' in message:
+            if message['id'] in self.events:
+                self.events[message['id']](message)
+                self.incoming.remove(message)
+
     def _incoming(self, message: dict):
         self.incoming.append(message)
