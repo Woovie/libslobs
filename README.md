@@ -1,8 +1,8 @@
 # libslobs
 Library for slobs-client, StreamLabs OBS API
 
-[Trello board](https://trello.com/libslobs)
-[Discord](https://discord.gg/Qns9rKe)
+* [Trello board](https://trello.com/libslobs)
+* [Discord](https://discord.gg/Qns9rKe)
 
 # How?
 Stream Labs OBS provides a websocket-based API which can be used to do just about anything in the Stream Labs client. [See their documentation here](https://stream-labs.github.io/streamlabs-obs-api-docs/docs/index.html).
