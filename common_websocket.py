@@ -35,18 +35,15 @@ class SLOBSWebSocket():
         asyncio.set_event_loop(loop)
         loop.run_until_complete(self._exec(self.encode_sockjs_array(cmd)))
 
-    async def exec_return(self, cmd: str):
-        message_id = cmd['id']
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        encoded_cmd = self.encode_sockjs_array(cmd)
-        await self.ws.send(encoded_cmd)
+    def exec_return(self, cmd: str):
+        self.exec(cmd)
         result = None
         while not result:
-            response = await self.ws.recv()
-            decoded_response = self.decode_sockjs_array(response)
-            if decoded_response['id'] == message_id:
-                result = decoded_response
+            for item in self.queue.incoming:
+                if item['id'] == cmd['id']:
+                    result = item
+                    self.queue.incoming.remove(item)
+                    break
         return result
 
     @staticmethod

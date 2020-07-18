@@ -28,8 +28,6 @@ class SLOBSQueue():
                     if message['id'] in self.events:
                         self.events[message['id']](message)
                         self.incoming.remove(message)
-                else:
-                    self.incoming.remove(message)
         
     def _incoming(self, message: dict):
         self.incoming.append(message)
