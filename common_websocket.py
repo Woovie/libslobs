@@ -5,7 +5,8 @@ class SLOBSWebSocket():
     def __init__(self, url = None):
         self.ws = None
         self.url = url
-        self.loop = asyncio.get_event_loop()
+        self.loop = asyncio.new_event_loop()
+        self.queue = None
 
     async def _connect(self):
         self.ws = await websockets.connect(self.url)
@@ -16,18 +17,23 @@ class SLOBSWebSocket():
         await self.ws.send(cmd)
 
     async def _recv(self):
-        received = await self.ws.recv()
-        return received
+        while True:
+            received = await self.ws.recv()
+            self.queue._incoming(self.decode_sockjs_array(received))
 
-    def process_recv(self, queue: libslobs.common_queue.SLOBSQueue):
-        recvd = self.loop.run_until_complete(self._recv())
-        queue._incoming(self.decode_sockjs_array(recvd))
+    def start(self, queue):
+        self.queue = queue
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_until_complete(self._recv())
 
     def connect(self):
+        asyncio.set_event_loop(self.loop)
         return self.loop.run_until_complete(self._connect())
 
     def exec(self, cmd: str):
-        self.loop.run_until_complete(self._exec(self.encode_sockjs_array(cmd)))
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(self._exec(self.encode_sockjs_array(cmd)))
     
     @staticmethod
     def decode_sockjs_array(arr: str):

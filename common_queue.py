@@ -1,9 +1,15 @@
 from typing import Callable, Any
+import asyncio
 
 class SLOBSQueue():
     def __init__(self):
         self.incoming = []
         self.events = {}
+        self.loop = asyncio.new_event_loop()
+
+    def start(self):
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_until_complete(self._process_queue())
 
     def add_callback(self, callback: Callable[[dict], Any], id: str):
         self.events[id] = callback
@@ -16,10 +22,14 @@ class SLOBSQueue():
         self.events.pop(id)
     
     def _process_queue(self):
-        for message in self.incoming:
-            if id in message:
-                if message[id] in self.events:
-                    self.events[message[id]](message)
+        while True:
+            for message in self.incoming:
+                if 'id' in message:
+                    if message['id'] in self.events:
+                        self.events[message['id']](message)
+                        self.incoming.remove(message)
+                else:
+                    self.incoming.remove(message)
         
     def _incoming(self, message: dict):
         self.incoming.append(message)
