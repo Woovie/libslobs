@@ -1,12 +1,14 @@
 from typing import Callable, Any
 import asyncio
 from time import sleep, time
+from threading import Condition
 
 class SLOBSQueue():
     def __init__(self):
         self.incoming = []
         self.events = {}
         self.loop = asyncio.new_event_loop()
+        self.condition = Condition()
 
     def start(self):
         asyncio.set_event_loop(self.loop)
@@ -21,15 +23,13 @@ class SLOBSQueue():
 
     def remove_callback(self, id: str):
         self.events.pop(id)
-    
+
     def _process_queue(self):
-        while True:
-            if len(self.incoming) > 0:
-                for message in self.incoming:
-                    self._process_queue_message(message)
-                sleep(-time()%0.01667)
-            else:
-                sleep(0.01667)
+        with self.condition:
+            while not len(self.incoming) > 0:
+                self.condition.wait()
+            for message in self.incoming:
+                self._process_queue_message(message)
 
     def _process_queue_message(self, message: str):
         if 'id' in message:
