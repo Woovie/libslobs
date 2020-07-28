@@ -16,9 +16,7 @@ class Client():
         self.threads = {}
         self.threads['queue_processor'] = threading.Thread(target=self.queue.start)
         self.threads['websocket_recv'] = threading.Thread(target=self.websocket.start, args=[self.queue])
-        self.config = configparser.ConfigParser()
-        self.config.read('settings.ini')
-        self.authid = self.config['slobs-client']['api-token']
+        self.authid = None
     
     def connect(self):
         output = self.websocket.connect()
@@ -31,6 +29,7 @@ class Client():
         self.threads['websocket_recv'].start()
 
     def auth(self):
-        payload = libslobs.common_payloads.create_payload('auth', 'TcpServerService', self.authid)
+        payload = libslobs.common_payloads.create_payload('auth', 'TcpServerService', self.api_token)
+        self.authid = payload['id']
         auth_output = self.websocket.exec_return(payload)
         print(auth_output)
