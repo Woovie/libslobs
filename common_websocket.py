@@ -1,7 +1,7 @@
 import asyncio, websockets, json
 import libslobs.common_queue
-import libslobs.common_sockjs
-
+import libslobs.common_sockjs as sockjs
+ 
 class WebSocket():
     def __init__(self, url = None):
         self.ws = None
@@ -20,7 +20,7 @@ class WebSocket():
     async def _recv(self):
         while True:
             received = await self.ws.recv()# This will properly hold the thread, so we can use while True without issue here. I truly want to process incoming messages _as fast as possible_
-            self.queue._incoming(libslobs.common_sockjs.decode_sockjs_array(received))
+            self.queue._incoming(sockjs.decode_sockjs_array(received))
 
     def start(self, queue: libslobs.common_queue.Queue):
         self.queue = queue
@@ -34,7 +34,7 @@ class WebSocket():
     def exec(self, cmd: dict):# dict = libslobs.common_payloads.Payload.create_payload
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(self._exec(libslobs.common_sockjs.encode_sockjs_array(cmd)))
+        loop.run_until_complete(self._exec(sockjs.encode_sockjs_array(cmd)))
 
     def exec_return(self, cmd: dict):# dict = libslobs.common_payloads.Payload.create_payload
         self.exec(cmd)
@@ -43,6 +43,7 @@ class WebSocket():
             for item in self.queue.incoming:
                 if self._process_exec_return(cmd, item):
                     self.queue.incoming.remove(item)
+                    result = item
                     break
         return result
 
