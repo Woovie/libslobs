@@ -1,6 +1,6 @@
 # These classes are used to represent SLOBS itself.
 
-class SlobsClient():
+class SLOBS():
     def __init__(self):
         self.scene_collections = None
 
@@ -12,7 +12,6 @@ class SLOBSScene():
     def __init__(self):
         self.scene = None
         self.sources = None
-
 
 class SLOBSSource():
     def __init__(self):
