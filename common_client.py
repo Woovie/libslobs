@@ -20,6 +20,7 @@ class Client():
     
     def connect(self):
         output = self.websocket.connect()
+        print(output)
         if output == 'o':
             self.start_threads()
             self.auth()
