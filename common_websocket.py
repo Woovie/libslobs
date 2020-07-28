@@ -1,7 +1,8 @@
 import asyncio, websockets, json
 import libslobs.common_queue
+import libslobs.common_sockjs
 
-class SLOBSWebSocket():
+class WebSocket():
     def __init__(self, url = None):
         self.ws = None
         self.url = url
@@ -18,10 +19,10 @@ class SLOBSWebSocket():
 
     async def _recv(self):
         while True:
-            received = await self.ws.recv()
-            self.queue._incoming(self.decode_sockjs_array(received))
+            received = await self.ws.recv()# This will properly hold the thread, so we can use while True without issue here. I truly want to process incoming messages _as fast as possible_
+            self.queue._incoming(libslobs.common_sockjs.decode_sockjs_array(received))
 
-    def start(self, queue):
+    def start(self, queue: libslobs.common_queue.Queue):
         self.queue = queue
         asyncio.set_event_loop(self.loop)
         self.loop.run_until_complete(self._recv())
@@ -30,26 +31,23 @@ class SLOBSWebSocket():
         asyncio.set_event_loop(self.loop)
         return self.loop.run_until_complete(self._connect())
 
-    def exec(self, cmd: str):
+    def exec(self, cmd: dict):# dict = libslobs.common_payloads.Payload.create_payload
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(self._exec(self.encode_sockjs_array(cmd)))
+        loop.run_until_complete(self._exec(libslobs.common_sockjs.encode_sockjs_array(cmd)))
 
-    def exec_return(self, cmd: str):
+    def exec_return(self, cmd: dict):# dict = libslobs.common_payloads.Payload.create_payload
         self.exec(cmd)
         result = None
         while not result:
             for item in self.queue.incoming:
-                if item['id'] == cmd['id']:
-                    result = item
+                if self._process_exec_return(cmd, item):
                     self.queue.incoming.remove(item)
                     break
         return result
 
-    @staticmethod
-    def decode_sockjs_array(arr: str):
-        return json.loads(json.loads(arr[2:-1]))
-    
-    @staticmethod
-    def encode_sockjs_array(arr: dict):
-        return json.dumps(json.dumps(arr))
+    def _process_exec_return(self, cmd: dict, item: dict):# dict = libslobs.common_payloads.Payload.create_payload
+        if item['id'] == cmd['id']:
+            return item
+        else:
+            return None
