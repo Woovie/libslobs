@@ -2,7 +2,6 @@ import uuid, threading, asyncio, configparser
 import libslobs.common_websocket
 import libslobs.common_payloads
 import libslobs.common_queue
-import libslobs
 from typing import Callable, Any
 
 class Client():
