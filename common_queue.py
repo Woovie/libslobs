@@ -3,7 +3,7 @@ import asyncio
 from time import sleep, time
 from threading import Condition
 
-class SLOBSQueue():
+class Queue():
     def __init__(self):
         self.incoming = []
         self.events = {}
@@ -16,10 +16,7 @@ class SLOBSQueue():
 
     def add_callback(self, callback: Callable[[dict], Any], id: str):
         self.events[id] = callback
-        if id in self.events:
-            return True
-        else:
-            return False# This is going to be a major problem, and likely python will have fucked up much greater if this happens.
+        return True
 
     def remove_callback(self, id: str):
         self.events.pop(id)
