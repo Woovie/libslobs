@@ -38,8 +38,8 @@ class Client():
         self.threads['websocket_recv'].start()
 
     def stop_threads(self):
-        self.threads['websocket_recv'].stop()
-        self.threads['queue_processor'].stop()
+        self.threads['websocket_recv'].join()
+        self.threads['queue_processor'].join()
 
     def auth(self):
         payload = payloads.create_payload('auth', 'TcpServerService', self.api_token)
