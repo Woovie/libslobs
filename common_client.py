@@ -29,8 +29,8 @@ class Client():
                 return True
 
     def disconnect(self):
-        self.stop_threads()
         output = self.websocket.disconnect()
+        self.stop_threads()
         return output
 
     def start_threads(self):
