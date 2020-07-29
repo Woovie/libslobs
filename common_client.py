@@ -28,9 +28,17 @@ class Client():
             if auth_result:
                 return True
 
+    def disconnect(self):
+        self.stop_threads()
+        output = self.websocket.disconnect()
+
     def start_threads(self):
         self.threads['queue_processor'].start()
         self.threads['websocket_recv'].start()
+
+    def stop_threads(self):
+        self.threads['websocket_recv'].stop()
+        self.threads['queue_processor'].stop()
 
     def auth(self):
         payload = payloads.create_payload('auth', 'TcpServerService', self.api_token)
