@@ -27,18 +27,18 @@ class WebSocket():
             self.queue._incoming(sockjs.decode_sockjs_array(received))
 
     def start(self, queue: libslobs.common_queue.Queue):
-        loop = asyncio.new_event_loop()
         self.queue = queue
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(self._recv())
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_until_complete(self._recv())
 
     def connect(self):
         asyncio.set_event_loop(self.loop)
         return self.loop.run_until_complete(self._connect())
 
     def disconnect(self):
-        asyncio.set_event_loop(self.loop)
-        return self.loop.run_until_complete(self._disconnect())
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        return loop.run_until_complete(self._disconnect())
 
     def exec(self, cmd: dict):# dict = libslobs.common_payloads.Payload.create_payload
         loop = asyncio.new_event_loop()
