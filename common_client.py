@@ -31,6 +31,7 @@ class Client():
     def disconnect(self):
         self.stop_threads()
         output = self.websocket.disconnect()
+        return output
 
     def start_threads(self):
         self.threads['queue_processor'].start()
