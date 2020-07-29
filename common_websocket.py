@@ -27,9 +27,10 @@ class WebSocket():
             self.queue._incoming(sockjs.decode_sockjs_array(received))
 
     def start(self, queue: libslobs.common_queue.Queue):
+        loop = asyncio.new_event_loop()
         self.queue = queue
-        asyncio.set_event_loop(self.loop)
-        self.loop.run_until_complete(self._recv())
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(self._recv())
 
     def connect(self):
         asyncio.set_event_loop(self.loop)
