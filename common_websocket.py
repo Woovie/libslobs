@@ -14,6 +14,10 @@ class WebSocket():
         response = await self.ws.recv()
         return response
 
+    async def _disconnect(self):
+        await self.ws.close()
+        return True
+
     async def _exec(self, cmd: str):
         await self.ws.send(cmd)
 
@@ -30,6 +34,10 @@ class WebSocket():
     def connect(self):
         asyncio.set_event_loop(self.loop)
         return self.loop.run_until_complete(self._connect())
+
+    def disconnect(self):
+        asyncio.set_event_loop(self.loop)
+        return self.loop.run_until_complete(self._disconnect())
 
     def exec(self, cmd: dict):# dict = libslobs.common_payloads.Payload.create_payload
         loop = asyncio.new_event_loop()
